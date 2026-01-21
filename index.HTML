@@ -1212,7 +1212,7 @@
 
     <div class="grid grid-3">
 
-      <!-- Project 1 -->
+      <!-- Static Project 1 -->
       <div class="project-card slide-left">
         <div class="project-icon" style="background: var(--gradient-primary);">
           <i class="fas fa-award"></i>
@@ -1227,11 +1227,11 @@
         </div>
         <div class="project-actions">
           <a href="https://github.com/NJANDINIH" class="btn btn-outline"><i class="fab fa-github"></i> Code</a>
-          <a href="https://www.flickr.com/photos/201699147@N06/" class="btn btn-primary"><i class="fas fa-external-link-alt"></i> View</a>
+          <a href="https://www.flickr.com/photos/201699147@N06/" class="btn btn-primary" target="_blank"><i class="fas fa-external-link-alt"></i> View</a>
         </div>
       </div>
 
-      <!-- Project 2 -->
+      <!-- Static Project 2 -->
       <div class="project-card fade-in">
         <div class="project-icon" style="background: var(--gradient-secondary);">
           <i class="fas fa-award"></i>
@@ -1245,11 +1245,11 @@
         </div>
         <div class="project-actions">
           <a href="https://github.com/NJANDINIH" class="btn btn-outline"><i class="fab fa-github"></i> Code</a>
-          <a href="https://sdc.dirisa.ac.za/2024-datathon/" class="btn btn-primary"><i class="fas fa-external-link-alt"></i> View</a>
+          <a href="https://sdc.dirisa.ac.za/2024-datathon/" class="btn btn-primary" target="_blank"><i class="fas fa-external-link-alt"></i> View</a>
         </div>
       </div>
 
-      <!-- Project 3 -->
+      <!-- Static Project 3 -->
       <div class="project-card slide-right">
         <div class="project-icon" style="background: linear-gradient(45deg, var(--accent), var(--primary));">
           <i class="fas fa-external-link-alt"></i>
@@ -1268,7 +1268,7 @@
         </div>
       </div>
 
-      <!-- Project 4 (TS WoodMasters) -->
+      <!-- Static Project 4 -->
       <div class="project-card fade-in">
         <div class="project-icon" style="background: var(--gradient-secondary);">
           <i class="fas fa-award"></i>
@@ -1280,11 +1280,11 @@
         </div>
         <div class="project-actions">
           <a href="https://github.com/NJANDINIH/Ts-woodmasters.git" class="btn btn-outline"><i class="fab fa-github"></i> Code</a>
-          <a href="https://www.tswoodmasters.co.za/" class="btn btn-primary"><i class="fas fa-external-link-alt"></i> View</a>
+          <a href="https://www.tswoodmasters.co.za/" class="btn btn-primary" target="_blank"><i class="fas fa-external-link-alt"></i> View</a>
         </div>
       </div>
 
-      <!-- Dynamic GitHub projects will be inserted here -->
+      <!-- Dynamic GitHub projects -->
       <div id="dynamic-projects"></div>
 
     </div> <!-- end grid -->
@@ -1292,42 +1292,48 @@
   </div> <!-- end container -->
 </section>
 
-<!-- Add this script at the bottom of your page or in scripts.js -->
 <script>
-const githubUsername = "NJANDINIH"; // your GitHub username
+const githubUsername = "NJANDINIH";
 const dynamicContainer = document.getElementById("dynamic-projects");
 
-// Optional: only show specific repos here, leave empty for all public repos
-const includedRepos = ["barn-buddy-boutique2"]; 
+// Map repos to live deployment links
+const customLinks = {
+  "barn-buddy-boutique2": "https://farmstork.netlify.app/"
+};
 
+// Fetch repos from GitHub
 fetch(`https://api.github.com/users/${githubUsername}/repos?sort=updated`)
   .then(res => res.json())
   .then(repos => {
-    repos
-      .filter(repo => includedRepos.length === 0 || includedRepos.includes(repo.name))
-      .forEach(repo => {
-        const card = document.createElement("div");
-        card.classList.add("project-card", "fade-in");
+    repos.forEach(repo => {
+      // Only include repos in customLinks or all public repos
+      if (Object.keys(customLinks).length > 0 && !customLinks[repo.name]) return;
 
-        card.innerHTML = `
-          <div class="project-icon" style="background: linear-gradient(45deg, var(--accent), var(--primary));">
-            <i class="fas fa-external-link-alt"></i>
-          </div>
-          <h3>${repo.name}</h3>
-          <p>${repo.description || "No description"}</p>
-          <div class="project-tags">
-            <span class="tag">GitHub</span>
-          </div>
-          <div class="project-actions">
-            <a href="${repo.html_url}" class="btn btn-outline"><i class="fab fa-github"></i> Code</a>
-            ${repo.homepage ? `<a href="${repo.homepage}" class="btn btn-primary"><i class="fas fa-external-link-alt"></i> View</a>` : ""}
-          </div>
-        `;
-        dynamicContainer.appendChild(card);
-      });
+      const card = document.createElement("div");
+      card.classList.add("project-card", "fade-in");
+
+      const liveLink = customLinks[repo.name] || repo.homepage || "";
+
+      card.innerHTML = `
+        <div class="project-icon" style="background: linear-gradient(45deg, var(--accent), var(--primary));">
+          <i class="fas fa-external-link-alt"></i>
+        </div>
+        <h3>${repo.name}</h3>
+        <p>${repo.description || "No description"}</p>
+        <div class="project-tags">
+          <span class="tag">GitHub</span>
+        </div>
+        <div class="project-actions">
+          <a href="${repo.html_url}" class="btn btn-outline" target="_blank"><i class="fab fa-github"></i> Code</a>
+          ${liveLink ? `<a href="${liveLink}" class="btn btn-primary" target="_blank"><i class="fas fa-external-link-alt"></i> View</a>` : ""}
+        </div>
+      `;
+      dynamicContainer.appendChild(card);
+    });
   })
   .catch(err => console.error("Error loading GitHub repos:", err));
 </script>
+
 
 
 
