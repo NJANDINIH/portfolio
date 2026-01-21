@@ -1,0 +1,13 @@
+# OS / system files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+
+# Logs
+*.log
+
+# XAMPP / local files
+php.ini
+.htaccess
