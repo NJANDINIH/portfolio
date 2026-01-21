@@ -227,3 +227,39 @@ window.addEventListener('scroll', handleScroll);
 
 // Initial scroll check
 handleScroll();
+
+
+
+const githubUsername = "NJANDINIH"; // your GitHub username
+const dynamicContainer = document.getElementById("dynamic-projects");
+
+// List of repos you want to show dynamically (can leave empty to show all public repos)
+const includedRepos = ["barn-buddy-boutique2"];
+
+fetch(`https://api.github.com/users/${githubUsername}/repos?sort=updated`)
+  .then(res => res.json())
+  .then(repos => {
+    repos
+      .filter(repo => includedRepos.length === 0 || includedRepos.includes(repo.name))
+      .forEach(repo => {
+        const card = document.createElement("div");
+        card.classList.add("project-card", "fade-in"); // matches your existing animation
+
+        card.innerHTML = `
+          <div class="project-icon" style="background: linear-gradient(45deg, var(--accent), var(--primary));">
+            <i class="fas fa-external-link-alt"></i>
+          </div>
+          <h3>${repo.name}</h3>
+          <p>${repo.description || "No description"}</p>
+          <div class="project-tags">
+            <span class="tag">GitHub</span>
+          </div>
+          <div class="project-actions">
+            <a href="${repo.html_url}" class="btn btn-outline"><i class="fab fa-github"></i> Code</a>
+            ${repo.homepage ? `<a href="${repo.homepage}" class="btn btn-primary"><i class="fas fa-external-link-alt"></i> View</a>` : ""}
+          </div>
+        `;
+        dynamicContainer.appendChild(card);
+      });
+  })
+  .catch(err => console.error("Error loading GitHub repos:", err));
