@@ -1193,7 +1193,7 @@
             <h3>Drakensberg Secondary School</h3>
             <p style="color: var(--primary); font-weight: 600; margin: 0.5rem 0;">Matric</p>
             <p style="color: var(--accent); font-weight: 500; margin-bottom: 1rem;">2016 - 2021</p>
-            <p style="color: var(--muted-foreground);">Completed secondary education with focus on Mathematics and Physical Sciences.</p>
+            <p style="color: var(--muted-foreground);">Completed secondary education with Bacholor Pass and Two Distinctions.</p>
           </div>
         </div>
       </div>
@@ -1780,5 +1780,36 @@ fetch(`https://api.github.com/users/${githubUsername}/repos?sort=updated`)
 
 
   </script>
+
+  <!-- Scroll To Top Button -->
+<button id="scrollToTopBtn" class="scroll-to-top" aria-label="Scroll to top">
+  <i class="fas fa-arrow-up"></i>
+</button>
+
+<script>
+  // ===============================
+  // Scroll To Top Button Logic
+  // ===============================
+
+  const scrollBtn = document.getElementById("scrollToTopBtn");
+
+  // Show button after scrolling down
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 300) {
+      scrollBtn.classList.add("show");
+    } else {
+      scrollBtn.classList.remove("show");
+    }
+  });
+
+  // Smooth scroll to top when clicked
+  scrollBtn.addEventListener("click", () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  });
+</script>
+
 </body>
 </html>
