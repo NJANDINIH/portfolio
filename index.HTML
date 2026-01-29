@@ -1293,46 +1293,43 @@
 </section>
 
 <script>
-const githubUsername = "NJANDINIH";
-const dynamicContainer = document.getElementById("dynamic-projects");
+const username = "NJANDINIH"; // your GitHub username
+const container = document.getElementById("dynamic-projects");
 
-// Map repos to live deployment links
-const customLinks = {
-  "barn-buddy-boutique2": "https://farmstork.netlify.app/"
-};
-
-// Fetch repos from GitHub
-fetch(`https://api.github.com/users/${githubUsername}/repos?sort=updated`)
-  .then(res => res.json())
+fetch(`https://api.github.com/users/${NJANDINIH}/repos?sort=updated`)
+  .then(response => response.json())
   .then(repos => {
     repos.forEach(repo => {
-      // Only include repos in customLinks or all public repos
-      if (Object.keys(customLinks).length > 0 && !customLinks[repo.name]) return;
+      if (repo.fork) return; // skip forked repos
 
       const card = document.createElement("div");
-      card.classList.add("project-card", "fade-in");
-
-      const liveLink = customLinks[repo.name] || repo.homepage || "";
+      card.className = "project-card fade-in";
 
       card.innerHTML = `
-        <div class="project-icon" style="background: linear-gradient(45deg, var(--accent), var(--primary));">
-          <i class="fas fa-external-link-alt"></i>
+        <div class="project-icon" style="background: var(--gradient-primary);">
+          <i class="fab fa-github"></i>
         </div>
         <h3>${repo.name}</h3>
-        <p>${repo.description || "No description"}</p>
-        <div class="project-tags">
-          <span class="tag">GitHub</span>
-        </div>
+        <p>${repo.description || "No description provided."}</p>
         <div class="project-actions">
-          <a href="${repo.html_url}" class="btn btn-outline" target="_blank"><i class="fab fa-github"></i> Code</a>
-          ${liveLink ? `<a href="${liveLink}" class="btn btn-primary" target="_blank"><i class="fas fa-external-link-alt"></i> View</a>` : ""}
+          <a href="${repo.html_url}" target="_blank" class="btn btn-outline">
+            <i class="fab fa-github"></i> Code
+          </a>
+          ${repo.homepage ? `
+          <a href="${repo.homepage}" target="_blank" class="btn btn-primary">
+            <i class="fas fa-external-link-alt"></i> Live
+          </a>` : ""}
         </div>
       `;
-      dynamicContainer.appendChild(card);
+
+      container.appendChild(card);
     });
   })
-  .catch(err => console.error("Error loading GitHub repos:", err));
+  .catch(error => {
+    console.error("Error loading GitHub projects:", error);
+  });
 </script>
+
 
 
 
